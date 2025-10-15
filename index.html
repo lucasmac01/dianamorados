@@ -25,9 +25,9 @@
   </header>
 
   <main class="flex flex-col items-center justify-center px-6 pb-12 mt-10">
+    <!-- CONTADOR -->
     <section class="card text-center max-w-md w-full soft">
       <h1 class="text-3xl font-bold text-[var(--accent)]">Nosso Tempo</h1>
-
       <div class="mt-8 flex flex-col items-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[var(--accent)] pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s-6-4.35-8-8.53C2 9.6 3.6 6 7.14 6c2.02 0 3.19 1.12 3.66 2.05C11.47 7.12 12.64 6 14.66 6c3.54 0 5.14 3.6 3.84 6.47C18 16.65 12 21 12 21z"/></svg>
         <p class="mt-5 text-lg text-gray-700">Juntos há</p>
@@ -39,27 +39,21 @@
       </div>
     </section>
 
+    <!-- RESGATE -->
     <section class="card mt-8 text-center max-w-md w-full soft">
       <h2 class="text-lg font-semibold text-gray-900">Cartão + Brinde do mês</h2>
       <p id="redeemStatus" class="mt-1 text-xs text-gray-500">Verificando…</p>
-
       <button id="btnRedeem" class="btn-breath mt-6 w-full rounded-full py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-sm">
         Resgatar no dia 15
       </button>
-
-      <div id="giftArea" class="mt-6 hidden">
-        <div class="rounded-xl border p-4">
-          <p id="giftMessage" class="text-gray-700"></p>
-          <p class="mt-2 text-xs uppercase tracking-wide text-gray-500">Brinde</p>
-          <p id="giftCode" class="mt-1 font-mono text-sm text-gray-900 select-all">—</p>
-        </div>
-      </div>
     </section>
 
     <footer class="mt-10 text-xs text-gray-400 text-center">
       Feito com <span class="text-[var(--accent)]">❤</span> para celebrar o amor
     </footer>
-    <!-- Modal simples -->
+  </main>
+
+  <!-- Modal simples (para dias fora do 15) -->
   <div id="infoModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="infoTitle">
     <div class="absolute inset-0 bg-black/40" data-close="infoModal"></div>
     <div class="relative w-full max-w-sm rounded-2xl bg-white p-5 shadow-xl">
@@ -74,13 +68,12 @@
     </div>
   </div>
 
-  </main>
-
   <script>
-    const START_DATE_ISO = '2025-02-15';
-    const LS_KEYS = { lastGift: 'gift_lastRedeem' };
+    // ===== Configuração =====
+    const START_DATE_ISO = '2025-02-15'; // início do relacionamento (YYYY-MM-DD)
     const WA_URL = 'https://wa.me/5551999970775?text=Acabei%20de%20resgatar%20meu%20cart%C3%A3o%20do%20dia%2015!%20%E2%9D%A4%EF%B8%8F';
 
+    // ===== Utilitários de data (timezone America/Sao_Paulo) =====
     function getTodayBR(){
       const parts = new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',year:'numeric'}).formatToParts(new Date());
       const m = Object.fromEntries(parts.map(p=>[p.type,p.value]));
@@ -88,18 +81,16 @@
     }
     function parseISODateOnly(iso){ const [Y,M,D]=iso.split('-').map(Number); return new Date(Y,M-1,D); }
     function diffDays(a,b){ return Math.floor((b-a)/(24*60*60*1000)); }
-    const toYYYYMM = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
 
+    // ===== Elementos =====
     const el = {
       totalDays: document.getElementById('totalDays'),
       sinceDate: document.getElementById('sinceDate'),
       btn: document.getElementById('btnRedeem'),
-      status: document.getElementById('redeemStatus'),
-      giftArea: document.getElementById('giftArea'),
-      giftMessage: document.getElementById('giftMessage'),
-      giftCode: document.getElementById('giftCode'),
+      status: document.getElementById('redeemStatus')
     };
 
+    // ===== Contador =====
     function updateCounter(){
       const today = getTodayBR();
       const start = parseISODateOnly(START_DATE_ISO);
@@ -108,22 +99,18 @@
       el.totalDays.classList.remove('pop'); void el.totalDays.offsetWidth; el.totalDays.classList.add('pop');
     }
 
+    // ===== Regras de resgate =====
     function canRedeemToday(){
       const today = getTodayBR();
-      if(today.getDate() !== 15) return { ok:false, reason:'not15' };
-      const currentYM = toYYYYMM(today);
-      const last = localStorage.getItem(LS_KEYS.lastGift)||'';
-      if(last === currentYM) return { ok:false, reason:'already' };
-      return { ok:true };
+      return { ok: today.getDate() === 15 };
     }
 
-    // ✅ Corrigido: else dentro do escopo da função, sem blocos soltos
     function updateButton(){
       const av = canRedeemToday();
       const btn = el.btn;
       const BASE = 'btn-breath mt-6 w-full rounded-full py-3 text-sm font-semibold shadow-md focus:outline-none';
 
-      if(av.ok){
+      if (av.ok) {
         btn.disabled = false;
         btn.onclick = () => window.open(WA_URL, '_blank');
         btn.className = BASE + ' bg-emerald-600 hover:bg-emerald-700 text-white focus:ring-2 focus:ring-emerald-400';
@@ -135,29 +122,11 @@
         btn.className = BASE + ' bg-[var(--accent)] text-white shadow-md focus:ring-2 focus:ring-[var(--accent)]/30';
         btn.textContent = '🎁 Resgatar no dia 15';
         const t = getTodayBR();
-        el.status.textContent = (localStorage.getItem(LS_KEYS.lastGift)===toYYYYMM(t)) ? 'Já resgatado — libera na virada do mês' : `Hoje é ${String(t.getDate()).padStart(2,'0')}/${String(t.getMonth()+1).padStart(2,'0')}`;
+        el.status.textContent = `Hoje é ${String(t.getDate()).padStart(2,'0')}/${String(t.getMonth()+1).padStart(2,'0')}`;
       }
     }
 
-    function randomGift(){
-      const msgs = ['Um passeio juntos','Café da tarde a dois','Filme e pipoca','Jantar romântico em casa'];
-      const code = 'BRINDE-' + Math.random().toString(36).slice(2,8).toUpperCase();
-      return { text: msgs[Math.floor(Math.random()*msgs.length)], code };
-    }
-
-    function redeem(){
-      const av = canRedeemToday();
-      if(!av.ok){ openInfo('Aguarde o dia 15 para resgatar 💖'); return; }
-      localStorage.setItem(LS_KEYS.lastGift, toYYYYMM(getTodayBR()));
-      const g = randomGift();
-      el.giftMessage.textContent = g.text;
-      el.giftCode.textContent = g.code;
-      el.giftArea.classList.remove('hidden');
-      updateButton();
-    }
-
-    document.getElementById('btnRedeem').addEventListener('click', redeem);
-    // Modal helpers
+    // ===== Modal helpers =====
     const infoModal = document.getElementById('infoModal');
     const infoText = document.getElementById('infoText');
     function openInfo(msg){ infoText.textContent = msg || 'Aguarde o dia 15 para resgatar 💖'; infoModal.classList.remove('hidden'); infoModal.classList.add('flex'); }
@@ -165,18 +134,14 @@
     document.addEventListener('click', (e)=>{ const c=e.target.closest('[data-close]'); if(c){ closeInfo(); }});
     document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeInfo(); }});
 
-    // ===== Mini testes (não alteram a UI, apenas console) =====
-    function canRedeemOn(dateISO, lastGift){
-      const d = parseISODateOnly(dateISO);
-      if(d.getDate()!==15) return {ok:false, reason:'not15'};
-      const ym = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-      if(lastGift===ym) return {ok:false, reason:'already'};
-      return {ok:true};
-    }
-    console.assert(canRedeemOn('2025-10-15','2025-09').ok===true, 'Teste: 15/10 sem resgate prévio deve permitir');
-    console.assert(canRedeemOn('2025-10-14','').ok===false, 'Teste: 14/10 deve bloquear');
-    console.assert(canRedeemOn('2025-10-15','2025-10').ok===false, 'Teste: 15/10 com resgate no mês deve bloquear');
+    // ===== Testes rápidos (console) =====
+    function canRedeemOn(dateISO){ const d=parseISODateOnly(dateISO); return d.getDate()===15; }
+    console.assert(canRedeemOn('2025-10-15')===true,  'Teste: 15/10 deve permitir');
+    console.assert(canRedeemOn('2025-10-14')===false, 'Teste: 14/10 deve bloquear');
+    console.assert(canRedeemOn('2025-02-15')===true,  'Teste: 15/02 deve permitir');
+    console.assert(canRedeemOn('2025-02-28')===false, 'Teste: 28/02 deve bloquear');
 
+    // ===== Inicialização =====
     (function init(){ updateCounter(); updateButton(); })();
   </script>
 </body>
