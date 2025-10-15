@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nosso Contador de Dias</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind config (opcional, só para habilitar sombras e fontes mais suaves)
+    tailwind.config = {
+      theme: {
+        extend: {
+          boxShadow: {
+            glow: "0 10px 30px rgba(244,63,94,.15)",
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"></noscript>
+  <style>
+    html, body { font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji','Segoe UI Emoji'; }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .hover-scale {
+      transition: transform 0.2s ease;
+    }
+    .hover-scale:hover {
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-rose-50 via-white to-white text-zinc-800 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-900 dark:text-zinc-100 animate-fadeIn">
+  <!-- Top bar -->
+  <header class="sticky top-0 z-30 backdrop-blur bg-white/60 dark:bg-zinc-900/40 border-b border-rose-100/60 dark:border-zinc-800">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-2xl">❤️</span>
+        <span class="font-semibold tracking-tight">Nosso Tempo</span>
+      </div>
+      <button id="openSettings" class="px-3 py-1.5 rounded-xl bg-rose-500 text-white text-sm shadow-glow hover:opacity-90 transition-all hover:scale-105 active:scale-95">Configurar</button>
+    </div>
+  </header>
+
+  <!-- Hero / Counter -->
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 py-10 sm:py-16">
+    <section class="relative overflow-hidden rounded-3xl border border-rose-100 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/60 p-8 sm:p-12 shadow-glow backdrop-blur-sm hover:backdrop-blur transition-all duration-300">
+      <div class="absolute -top-24 -right-24 h-56 w-56 rounded-full bg-rose-200/60 blur-3xl dark:bg-rose-400/10"></div>
+
+      <div class="grid md:grid-cols-2 gap-8 items-center relative">
+        <div class="text-center md:text-left">
+          <p class="uppercase tracking-widest text-xs font-semibold text-rose-500/80">desde <span id="sinceLabel" class="text-rose-600">—</span></p>
+          <h1 class="mt-2 text-5xl sm:text-6xl font-extrabold tracking-tight">
+            <span id="daysCount" class="text-rose-600">0</span>
+            <span class="text-zinc-900 dark:text-zinc-100">dias</span>
+          </h1>
+          <p id="mainMessage" class="mt-4 text-lg sm:text-xl text-zinc-600 dark:text-zinc-300">
+            Hoje celebramos cada pequeno capítulo da nossa história. 💫
+          </p>
+
+          <div class="mt-6 flex flex-wrap items-center justify-center md:justify-start gap-3 text-sm text-zinc-500">
+            <span id="sinceHuman">—</span>
+            <span aria-hidden>•</span>
+            <span id="extras">Contando sorrisos, cafés e abraços.</span>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div class="aspect-[4/3] w-full rounded-2xl bg-gradient-to-br from-rose-100 to-rose-200 dark:from-zinc-800 dark:to-zinc-700 p-1">
+            <div class="h-full w-full rounded-2xl bg-white/60 dark:bg-zinc-900/60 backdrop-blur flex items-center justify-center">
+              <div class="text-center animate-pulse">
+                <div class="text-7xl font-extrabold text-rose-600/90" id="bigDays">0</div>
+                <div class="mt-1 text-sm uppercase tracking-widest text-rose-500">dias de nós dois</div>
+              </div>
+            </div>
+          </div>
+          <div class="pointer-events-none absolute -bottom-4 -left-4 h-24 w-24 rounded-full bg-rose-300/40 blur-2xl"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Nossos Momentos -->
+    <section class="mt-12 sm:mt-16">
+      <h2 class="text-center text-2xl sm:text-3xl font-semibold tracking-tight text-rose-600 mb-8">Nossos Momentos</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Photo Frame 1 -->
+        <div class="bg-white dark:bg-zinc-900 p-4 shadow-lg rounded-xl border border-rose-100 dark:border-zinc-800 hover-scale transition-all duration-200 hover:shadow-xl">
+          <div class="border-2 border-white dark:border-zinc-700 p-1 h-64 bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
+            <span class="text-zinc-400 dark:text-zinc-600">Sua foto aqui</span>
+          </div>
+          <div class="mt-3 text-center text-sm text-rose-600">Data: __/__/____</div>
+        </div>
+
+        <!-- Photo Frame 2 -->
+        <div class="bg-white dark:bg-zinc-900 p-4 shadow-lg rounded-xl border border-rose-100 dark:border-zinc-800 hover-scale transition-all duration-200 hover:shadow-xl">
+          <div class="border-2 border-white dark:border-zinc-700 p-1 h-64 bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
+            <span class="text-zinc-400 dark:text-zinc-600">Sua foto aqui</span>
+          </div>
+          <div class="mt-3 text-center text-sm text-rose-600">Data: __/__/____</div>
+        </div>
+
+        <!-- Photo Frame 3 -->
+        <div class="bg-white dark:bg-zinc-900 p-4 shadow-lg rounded-xl border border-rose-100 dark:border-zinc-800 hover-scale transition-all duration-200 hover:shadow-xl">
+          <div class="border-2 border-white dark:border-zinc-700 p-1 h-64 bg-gray-100 dark:bg-zinc-800 flex items-center justify-center">
+            <span class="text-zinc-400 dark:text-zinc-600">Sua foto aqui</span>
+          </div>
+          <div class="mt-3 text-center text-sm text-rose-600">Data: __/__/____</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Settings Drawer -->
+  <div id="settings" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/40" onclick="toggleSettings(false)"></div>
+    <aside class="absolute right-0 top-0 h-full w-full max-w-md bg-white dark:bg-zinc-900 shadow-2xl p-6 overflow-y-auto">
+      <div class="flex items-center justify-between">
+        <h3 class="text-lg font-semibold">Configurações</h3>
+        <button class="text-zinc-500 hover:text-zinc-700" onclick="toggleSettings(false)">Fechar</button>
+      </div>
+
+      <div class="mt-6 space-y-6">
+        <div>
+          <label class="block text-sm font-medium">Data de início do namoro</label>
+          <input id="startInput" type="date" class="mt-2 w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2" />
+          <p class="mt-1 text-xs text-zinc-500">A contagem é feita em dias corridos.</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Mensagem central</label>
+          <textarea id="messageInput" rows="3" class="mt-2 w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2" placeholder="Escreva algo carinhoso…"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium">Linha extra (opcional)</label>
+          <input id="extrasInput" type="text" class="mt-2 w-full rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2" placeholder="Ex.: Contando sorrisos, cafés e abraços." />
+        </div>
+
+        <div class="flex items-center justify-between">
+          <button onclick="resetAll()" class="text-sm text-zinc-500 hover:text-zinc-700">Restaurar padrão</button>
+          <button onclick="saveSettings()" class="px-4 py-2 rounded-xl bg-rose-600 text-white shadow-glow hover:opacity-90 transition">Salvar</button>
+        </div>
+      </div>
+
+      <hr class="my-6 border-zinc-200 dark:border-zinc-800" />
+      <p class="text-xs text-zinc-500">Dica: ative o modo escuro do seu sistema para um visual mais intimista. 🌙</p>
+    </aside>
+  </div>
+
+  <script>
+    // === Utilidades de data ===
+    const pad = (n) => String(n).padStart(2, '0');
+    const fmtBR = (d) => `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()}`;
+
+    // === Estado ===
+    const DEFAULTS = {
+      startDate: '2025-06-10', // ⬅️ Altere aqui ou nas Configurações
+      message: 'Hoje celebramos cada pequeno capítulo da nossa história. 💫',
+      extras: 'Contando sorrisos, cafés e abraços.'
+    };
+
+    function loadState() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('love-counter-v1')) || {};
+        return { ...DEFAULTS, ...saved };
+      } catch (e) { return { ...DEFAULTS }; }
+    }
+
+    function saveState(state) {
+      localStorage.setItem('love-counter-v1', JSON.stringify(state));
+    }
+
+    function diffInDays(from, to) {
+      const one = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+      const two = new Date(to.getFullYear(), to.getMonth(), to.getDate());
+      const diff = Math.round((two - one) / (1000*60*60*24));
+      return diff;
+    }
+
+    function render() {
+      const state = loadState();
+      const start = new Date(state.startDate);
+      const today = new Date();
+      const days = diffInDays(start, today);
+
+      document.getElementById('daysCount').textContent = days;
+      document.getElementById('bigDays').textContent = days;
+      document.getElementById('sinceLabel').textContent = fmtBR(start);
+
+      document.getElementById('mainMessage').textContent = state.message;
+      document.getElementById('extras').textContent = state.extras;
+
+      const sinceHuman = (() => {
+        const years = today.getFullYear() - start.getFullYear();
+        const months = today.getMonth() - start.getMonth() + years * 12;
+        const approxYears = Math.floor(months / 12);
+        const restMonths = months % 12;
+        if (approxYears > 0) return `${approxYears} ano(s) e ${restMonths} mês(es) juntos`;
+        if (months > 0) return `${months} mês(es) juntos`;
+        return `Começamos hoje há ${days} dia(s)!`;
+      })();
+      document.getElementById('sinceHuman').textContent = sinceHuman;
+
+    }
+
+    // === Settings UI ===
+    function toggleSettings(show) {
+      document.getElementById('settings').classList.toggle('hidden', show === false ? true : false);
+    }
+
+    function saveSettings() {
+      const state = loadState();
+      const startDate = document.getElementById('startInput').value || state.startDate;
+      const message = document.getElementById('messageInput').value || state.message;
+      const extras = document.getElementById('extrasInput').value || state.extras;
+      saveState({ startDate, message, extras });
+      toggleSettings(false);
+      render();
+    }
+
+    function resetAll() {
+      saveState(DEFAULTS);
+      document.getElementById('startInput').value = DEFAULTS.startDate;
+      document.getElementById('messageInput').value = DEFAULTS.message;
+      document.getElementById('extrasInput').value = DEFAULTS.extras;
+      render();
+    }
+
+    document.getElementById('openSettings').addEventListener('click', () => {
+      const state = loadState();
+      document.getElementById('startInput').value = state.startDate;
+      document.getElementById('messageInput').value = state.message;
+      document.getElementById('extrasInput').value = state.extras;
+      toggleSettings(true);
+    });
+
+    // Atualiza à meia-noite
+    (function tickToMidnight(){
+      const now = new Date();
+      const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 0,0,1);
+      setTimeout(() => { render(); tickToMidnight(); }, midnight - now);
+    })();
+
+    // Inicializa
+    render();
+  </script>
+</body>
+</html>
