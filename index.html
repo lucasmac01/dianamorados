@@ -3,50 +3,48 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nosso Tempo</title>
+  <title>Gatinho ❤️ Gatinha</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root { --accent: #ef4444; }
-    .pop{animation:pop .28s ease-out}@keyframes pop{0%{transform:scale(.97);opacity:.7}60%{transform:scale(1.02);opacity:1}100%{transform:scale(1)}}
-    .soft{box-shadow:0 1px 0 rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.06)}
-    .card-accent{border-top:4px solid rgba(239,68,68,.22)}
+    :root { --accent: #f87171; }
+    body { background: #f9fafb; }
+    .pop { animation: pop .3s ease-out; }
+    @keyframes pop { 0%{transform:scale(.96);opacity:.7} 60%{transform:scale(1.04);opacity:1} 100%{transform:scale(1);} }
+    .pulse { animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.15);opacity:0.85;} }
+    .soft { box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    .card { background:white; border-radius:1.25rem; padding:2.5rem; }
   </style>
 </head>
-<body class="bg-white text-gray-800 antialiased">
-  <!-- Header pequeno -->
-  <header class="py-3 text-center">
-    <div class="text-sm font-medium text-[var(--accent)]">Gatinho ❤️ Gatinha</div>
+<body class="text-gray-800 antialiased">
+  <header class="py-3 text-center bg-[var(--accent)]/20 border-b border-[var(--accent)]/30">
+    <div class="text-base font-semibold text-[var(--accent)]">Gatinho ❤️ Gatinha</div>
   </header>
 
-  <main class="min-h-screen max-w-xl mx-auto px-4 sm:px-6 py-8">
-    <!-- CONTADOR -->
-    <section class="rounded-2xl border soft card-accent p-6 sm:p-8 bg-white">
-      <header class="text-center">
-        <h1 class="text-2xl font-semibold text-gray-900">Nosso Tempo</h1>
-        <p class="mt-1 text-sm text-gray-500">Contador de amor</p>
-      </header>
-      <div class="mt-6 text-center">
-        <p class="text-sm text-gray-600">Juntos há</p>
-        <div class="mt-1">
-          <span id="totalDays" class="text-6xl font-extrabold text-[var(--accent)] tabular-nums">—</span>
+  <main class="flex flex-col items-center justify-center px-6 pb-12 mt-10">
+    <section class="card text-center max-w-md w-full soft">
+      <h1 class="text-3xl font-bold text-[var(--accent)]">Nosso Tempo</h1>
+
+      <div class="mt-8 flex flex-col items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-[var(--accent)] pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21s-6-4.35-8-8.53C2 9.6 3.6 6 7.14 6c2.02 0 3.19 1.12 3.66 2.05C11.47 7.12 12.64 6 14.66 6c3.54 0 5.14 3.6 3.84 6.47C18 16.65 12 21 12 21z"/></svg>
+        <p class="mt-5 text-lg text-gray-700">Juntos há</p>
+        <div class="mt-1 flex items-baseline gap-2">
+          <span id="totalDays" class="text-7xl font-extrabold text-[var(--accent)] pop">—</span>
+          <span class="text-lg font-semibold text-[var(--accent)]/90">dias</span>
         </div>
-        <p class="mt-1 text-xs text-gray-400">dias</p>
-        <p id="ymdBreakdown" class="mt-3 text-gray-700 tabular-nums">—</p>
-        <p id="sinceDate" class="mt-1 text-xs text-gray-500">Início: —</p>
+        <p id="sinceDate" class="mt-2 text-xs text-gray-400">Desde 15/02/2025</p>
       </div>
     </section>
 
-    <!-- RESGATE (dia 15) -->
-    <section class="mt-8 rounded-2xl border soft p-6 sm:p-8 bg-white">
-      <div class="flex items-center justify-between gap-4">
-        <h2 class="text-lg font-semibold text-gray-900">Cartão + Brinde do mês</h2>
-        <span id="redeemStatus" class="text-[10px] uppercase tracking-wide rounded-full px-2 py-1 border bg-gray-50 text-gray-600">Verificando…</span>
-      </div>
-      <p class="mt-2 text-sm text-gray-600">Disponível exclusivamente no <strong>dia 15</strong>, uma vez por mês (America/Sao_Paulo).</p>
-      <div class="mt-5">
-        <button id="btnRedeem" class="w-full sm:w-auto rounded-2xl px-6 py-3 text-sm font-semibold transition border shadow hover:shadow-md focus:outline-none disabled:opacity-70 disabled:cursor-not-allowed">Resgatar Cartão + Brinde</button>
-      </div>
-      <div id="giftArea" class="mt-5 hidden">
+    <section class="card mt-8 text-center max-w-md w-full soft">
+      <h2 class="text-lg font-semibold text-gray-900">Cartão + Brinde do mês</h2>
+      <p id="redeemStatus" class="mt-1 text-xs text-gray-500">Verificando…</p>
+
+      <button id="btnRedeem" class="mt-6 w-full rounded-full py-3 text-sm font-semibold transition focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-sm">
+        Resgatar no dia 15
+      </button>
+
+      <div id="giftArea" class="mt-6 hidden">
         <div class="rounded-xl border p-4">
           <p id="giftMessage" class="text-gray-700"></p>
           <p class="mt-2 text-xs uppercase tracking-wide text-gray-500">Brinde</p>
@@ -54,28 +52,27 @@
         </div>
       </div>
     </section>
+
+    <footer class="mt-10 text-xs text-gray-400 text-center">
+      Feito com <span class="text-[var(--accent)]">❤</span> para celebrar o amor
+    </footer>
   </main>
 
   <script>
-    // ===== Config =====
-    const START_DATE_ISO = '2025-03-15'; // 15/03/2025
+    const START_DATE_ISO = '2025-02-15';
     const LS_KEYS = { lastGift: 'gift_lastRedeem' };
 
-    // ===== Timezone utils (America/Sao_Paulo) =====
     function getTodayBR(){
       const parts = new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',year:'numeric'}).formatToParts(new Date());
       const m = Object.fromEntries(parts.map(p=>[p.type,p.value]));
       return new Date(+m.year, +m.month-1, +m.day);
     }
-    function parseISODateOnly(iso){ if(!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null; const [Y,M,D]=iso.split('-').map(Number); return new Date(Y,M-1,D); }
+    function parseISODateOnly(iso){ const [Y,M,D]=iso.split('-').map(Number); return new Date(Y,M-1,D); }
     function diffDays(a,b){ return Math.floor((b-a)/(24*60*60*1000)); }
-    function diffYMD(a,b){ let y=b.getFullYear()-a.getFullYear(); let m=b.getMonth()-a.getMonth(); let d=b.getDate()-a.getDate(); if(d<0){const prev=new Date(b.getFullYear(),b.getMonth(),0); d+=prev.getDate(); m--; } if(m<0){ m+=12; y--; } return {years:y,months:m,days:d}; }
     const toYYYYMM = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
 
-    // ===== Elements =====
     const el = {
       totalDays: document.getElementById('totalDays'),
-      ymdBreakdown: document.getElementById('ymdBreakdown'),
       sinceDate: document.getElementById('sinceDate'),
       btn: document.getElementById('btnRedeem'),
       status: document.getElementById('redeemStatus'),
@@ -84,26 +81,14 @@
       giftCode: document.getElementById('giftCode'),
     };
 
-    // ===== Counter =====
     function updateCounter(){
       const today = getTodayBR();
       const start = parseISODateOnly(START_DATE_ISO);
-      if(!start || start>today){
-        el.totalDays.textContent = '0';
-        el.ymdBreakdown.textContent = '0 anos • 0 meses • 0 dias';
-        el.sinceDate.textContent = 'Início: data inválida';
-        return;
-      }
       const total = diffDays(start,today);
-      const br = diffYMD(start,today);
-      el.totalDays.textContent = String(total);
-      el.ymdBreakdown.textContent = `${br.years} ${br.years===1?'ano':'anos'} • ${br.months} ${br.months===1?'mês':'meses'} • ${br.days} ${br.days===1?'dia':'dias'}`;
-      const [yy,mm,dd] = START_DATE_ISO.split('-');
-      el.sinceDate.textContent = `Início: ${dd}/${mm}/${yy}`;
+      el.totalDays.textContent = total;
       el.totalDays.classList.remove('pop'); void el.totalDays.offsetWidth; el.totalDays.classList.add('pop');
     }
 
-    // ===== Redeem rules =====
     function canRedeemToday(){
       const today = getTodayBR();
       if(today.getDate() !== 15) return { ok:false, reason:'not15' };
@@ -112,29 +97,33 @@
       if(last === currentYM) return { ok:false, reason:'already' };
       return { ok:true };
     }
-    function updateButton(){
-      const BTN_BASE = 'w-full sm:w-auto rounded-2xl px-6 py-3 text-sm font-semibold transition border shadow hover:shadow-md focus:outline-none disabled:opacity-70 disabled:cursor-not-allowed';
-      const RED = 'bg-[var(--accent)]/10 text-[var(--accent)] border-[var(--accent)]/30 hover:bg-[var(--accent)]/10 focus:ring-2 focus:ring-[var(--accent)]/30';
-      const GREEN = 'bg-emerald-600 hover:bg-emerald-700 text-white border-emerald-700/20 focus:ring-2 focus:ring-emerald-600';
 
+    function updateButton(){
       const av = canRedeemToday();
+      const btn = el.btn;
       if(av.ok){
-        el.btn.disabled = false; el.btn.className = BTN_BASE + ' ' + GREEN; el.btn.textContent = 'Resgatar Cartão + Brinde';
-        el.status.textContent = 'Disponível hoje (dia 15)'; el.status.className='text-[10px] uppercase tracking-wide rounded-full px-2 py-1 border bg-emerald-50 text-emerald-700 border-emerald-200';
+        btn.disabled = false;
+        btn.className = 'mt-6 w-full rounded-full py-3 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-400';
+        btn.textContent = '🎁 Resgatar agora';
+        el.status.textContent = 'Disponível hoje (dia 15)';
       } else {
-        el.btn.disabled = true; el.btn.className = BTN_BASE + ' ' + RED; el.btn.textContent = (av.reason==='already'?'Já resgatado este mês':'Disponível no dia 15');
+        btn.disabled = true;
+        btn.className = 'mt-6 w-full rounded-full py-3 text-sm font-semibold bg-[var(--accent)] text-white opacity-90 shadow-md cursor-not-allowed';
+        btn.textContent = '🎁 Resgatar no dia 15';
         const t = getTodayBR();
         el.status.textContent = av.reason==='already' ? 'Já resgatado — libera na virada do mês' : `Hoje é ${String(t.getDate()).padStart(2,'0')}/${String(t.getMonth()+1).padStart(2,'0')}`;
-        el.status.className='text-[10px] uppercase tracking-wide rounded-full px-2 py-1 border bg-gray-50 text-gray-600';
       }
     }
+
     function randomGift(){
       const msgs = ['Um passeio juntos','Café da tarde a dois','Filme e pipoca','Jantar romântico em casa'];
       const code = 'BRINDE-' + Math.random().toString(36).slice(2,8).toUpperCase();
       return { text: msgs[Math.floor(Math.random()*msgs.length)], code };
     }
+
     function redeem(){
-      const av = canRedeemToday(); if(!av.ok) return;
+      const av = canRedeemToday();
+      if(!av.ok) return;
       localStorage.setItem(LS_KEYS.lastGift, toYYYYMM(getTodayBR()));
       const g = randomGift();
       el.giftMessage.textContent = g.text;
@@ -143,15 +132,8 @@
       updateButton();
     }
 
-    // ===== Init & events =====
     document.getElementById('btnRedeem').addEventListener('click', redeem);
-    (function init(){
-      updateCounter();
-      updateButton();
-      // tick na virada de dia (SP)
-      const now=new Date(); const todayBR=getTodayBR(); const next=new Date(todayBR); next.setDate(todayBR.getDate()+1);
-      setTimeout(()=>{ updateCounter(); updateButton(); setInterval(()=>{ updateCounter(); updateButton(); }, 24*60*60*1000); }, next-now);
-    })();
+    (function init(){ updateCounter(); updateButton(); })();
   </script>
 </body>
 </html>
