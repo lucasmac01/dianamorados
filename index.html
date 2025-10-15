@@ -17,7 +17,7 @@
   </style>
 </head>
 <body class="text-gray-800 antialiased">
-  <header class="py-3 text-center bg-[var(--accent)]/20 border-b border-[var(--accent)]/30">
+  <header class="py-2 text-center bg-[var(--accent)]/15 border-b border-[var(--accent)]/30">
     <div class="text-base font-semibold text-[var(--accent)]">Gatinho ❤️ Gatinha</div>
   </header>
 
@@ -61,6 +61,7 @@
   <script>
     const START_DATE_ISO = '2025-02-15';
     const LS_KEYS = { lastGift: 'gift_lastRedeem' };
+    const WA_URL = 'https://wa.me/5551999970775?text=Acabei%20de%20resgatar%20meu%20cart%C3%A3o%20do%20dia%2015!%20%E2%9D%A4%EF%B8%8F';
 
     function getTodayBR(){
       const parts = new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Sao_Paulo',day:'2-digit',month:'2-digit',year:'numeric'}).formatToParts(new Date());
@@ -103,11 +104,13 @@
       const btn = el.btn;
       if(av.ok){
         btn.disabled = false;
+        btn.onclick = () => window.open(WA_URL, '_blank');
         btn.className = 'mt-6 w-full rounded-full py-3 text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md focus:outline-none focus:ring-2 focus:ring-emerald-400';
         btn.textContent = '🎁 Resgatar agora';
         el.status.textContent = 'Disponível hoje (dia 15)';
       } else {
         btn.disabled = true;
+        btn.onclick = null;
         btn.className = 'mt-6 w-full rounded-full py-3 text-sm font-semibold bg-[var(--accent)] text-white opacity-90 shadow-md cursor-not-allowed';
         btn.textContent = '🎁 Resgatar no dia 15';
         const t = getTodayBR();
